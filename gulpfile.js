@@ -23,9 +23,9 @@ var path = {
 		//img: 'app/img/*'
 	},
 	watch: {
-		//html: 'app/*.html',
-		//js: 'app/js/**/*.js',
-		//style: 'app/scss/*.scss'
+		html: 'app/*.html',
+		js: 'app/js/*.js',
+		css: 'app/scss/*.scss'
 	},
 	//clean: './dist'
 };
@@ -60,32 +60,18 @@ gulp.task('build-js', function () {
     .pipe(gulp.dest(path.dest.js));
 });
 
-gulp.task('watch', function () {
-	return watch(path.src.html, { ignoreInitial: false })
-    	.pipe(gulp.dest(path.dest.html));
-});
-
-
-gulp.task('default', [
-	'build-materialize-css',
-	'build-custom-css',
-	'build-js',
-	'watch'
-]);
-
-
-
-
-
-
-gulp.task('serve', ['build-materialize-css', 'build-custom-css', 'build-js', 'build-html'], function() {
+gulp.task('serve', [
+		'build-materialize-css', 
+		'build-custom-css', 
+		'build-js', 
+		'build-html'
+	], function() {
     browserSync.init({
         server: "./out"
     });
-    gulp.watch("app/scss/*.scss", ['build-materialize-css', 'build-custom-css', 'build-js']);
-    gulp.watch("app/*.html", ['build-html']).on('change', browserSync.reload);
+    gulp.watch(path.watch.css, ['build-materialize-css', 'build-custom-css']);
+    gulp.watch(path.watch.js, ['build-js']);
+    gulp.watch(path.watch.html, ['build-html']).on('change', browserSync.reload);
 });
-
-
 
 gulp.task('default', ['serve']);
