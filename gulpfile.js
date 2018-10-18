@@ -35,7 +35,7 @@ gulp.task('build-html', function () {
   return gulp.src(path.src.html)
     .pipe(htmlmin({ collapseWhitespace: true }))
 	.pipe(gulp.dest(path.dest.html))
-	.pipe(browserSync.stream());;
+	.pipe(browserSync.stream());
 });
 
 gulp.task('build-materialize-css', function () {
@@ -50,14 +50,15 @@ gulp.task('build-custom-css', function () {
   return gulp.src(path.src.customStyle)
     .pipe(sass().on('error', sass.logError))	// компиляция sass в css
     .pipe(concatCss("app.min.css"))				// конкатенация css в один файл
-    .pipe(cleanCSS({compatibility: 'ie8'}))		// минификация css
+    //.pipe(cleanCSS({compatibility: 'ie8'}))		// минификация css
     .pipe(gulp.dest(path.dest.css))				// сохранение минифицированных css
     .pipe(browserSync.stream());
 });
 
 gulp.task('build-js', function () {
   return gulp.src(path.src.js)
-    .pipe(gulp.dest(path.dest.js));
+    .pipe(gulp.dest(path.dest.js))
+    .pipe(browserSync.stream());
 });
 
 gulp.task('serve', [
