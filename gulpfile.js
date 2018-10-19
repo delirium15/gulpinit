@@ -50,7 +50,7 @@ gulp.task('build-custom-css', function () {
   return gulp.src(path.src.customStyle)
     .pipe(sass().on('error', sass.logError))	// компиляция sass в css
     .pipe(concatCss("app.min.css"))				// конкатенация css в один файл
-    //.pipe(cleanCSS({compatibility: 'ie8'}))		// минификация css
+    .pipe(cleanCSS({compatibility: 'ie8'}))		// минификация css
     .pipe(gulp.dest(path.dest.css))				// сохранение минифицированных css
     .pipe(browserSync.stream());
 });
@@ -68,7 +68,11 @@ gulp.task('serve', [
 		'build-html'
 	], function() {
     browserSync.init({
-        server: "./out"
+        //server: "./out"
+        proxy: {
+            target: "http://transnav/out",
+            ws: true
+        }
     });
     gulp.watch(path.watch.css, ['build-materialize-css', 'build-custom-css']);
     gulp.watch(path.watch.js, ['build-js']);
